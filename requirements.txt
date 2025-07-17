@@ -1,0 +1,7 @@
+gradio==5.37.0
+pyttsx3
+speechrecognition
+pyaudio
+python-dotenv
+requests
+huggingface_hub
