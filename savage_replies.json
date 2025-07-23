@@ -1,0 +1,53 @@
+[
+  {
+    "role": "assistant",
+    "metadata": null,
+    "content": "english <span style='font-size:12px;color:gray;'>[]</span> <span style='font-size:12px;color:gray;'>[]</span>",
+    "options": null
+  },
+  {
+    "role": "assistant",
+    "metadata": null,
+    "content": "telugu <span style='font-size:12px;color:gray;'>[]</span> <span style='font-size:12px;color:gray;'>[]</span>",
+    "options": null
+  },
+  {
+    "role": "assistant",
+    "metadata": null,
+    "content": "hindi <span style='font-size:12px;color:gray;'>[]</span> <span style='font-size:12px;color:gray;'>[]</span>",
+    "options": null
+  },
+  {
+    "role": "assistant",
+    "metadata": null,
+    "content": "<span style='color:#98FB98;font-weight:bold;'>📅 2025-07-23</span>",
+    "options": null
+  },
+  {
+    "role": "user",
+    "metadata": null,
+    "content": "hi <span style='font-size:12px;color:gray;'>[13:22]</span>",
+    "options": null
+  },
+  {
+    "role": "assistant",
+    "metadata": null,
+    "content": "Hello! How are you today? <span style='font-size:12px;color:gray;'>[13:22]</span>",
+    "options": null
+  },
+  {
+    "role": "date",
+    "content": "2025-07-23",
+    "date": "2025-07-23"
+  },
+  {
+    "role": "user",
+    "content": "im fine how are you",
+    "timestamp": "13:22"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm doing well, thanks for asking! It's always great to chat with someone new. How about we have a chat about something interesting? What's been the highlight of your day so far?",
+    "timestamp": "13:22"
+  }
+]

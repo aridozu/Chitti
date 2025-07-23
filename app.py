@@ -1,141 +1,152 @@
 import os
 import json
+import datetime
 import random
-import threading
+import pyttsx3
+import speech_recognition as sr
 import gradio as gr
-from dotenv import load_dotenv
 from groq import Groq
-from voice_utils import listen_voice, speak_text
-from playsound import playsound
+from dotenv import load_dotenv
+from ddgs import DDGS
 
-# ✅ Load API Key
+# ✅ Load environment variables
 load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-
 if not GROQ_API_KEY:
-    print("❌ GROQ_API_KEY is missing. Check your .env file.")
+    print("⚠️ GROQ_API_KEY not found in environment.")
 else:
     print("✅ GROQ_API_KEY loaded successfully.")
 
 client = Groq(api_key=GROQ_API_KEY)
+search_engine = DDGS()
 
-# ✅ Chat log file (Auto delete old logs on restart)
-CHAT_LOG_FILE = "chat_log.json"
-if os.path.exists(CHAT_LOG_FILE):
-    os.remove(CHAT_LOG_FILE)
+# ✅ Chat History File
+CHAT_HISTORY_FILE = "chat_history.json"
 
-# ✅ Boothulu (Savage Replies)
-with open("boothulu.json", "r", encoding="utf-8") as f:
-    BOOTHULU = json.load(f)
+# ✅ Day-wise colors (7 colors for 7 days)
+DAY_COLORS = [
+    "#FFB3BA", "#FFDFBA", "#FFFFBA", "#BAFFC9",
+    "#BAE1FF", "#E3BAFF", "#FFBAE1"
+]
 
-# ✅ Detect Language
-def detect_language(text):
-    telugu_chars = sum(1 for c in text if "\u0C00" <= c <= "\u0C7F")
-    hindi_chars = sum(1 for c in text if "\u0900" <= c <= "\u097F")
-    if telugu_chars > hindi_chars and telugu_chars > 3:
-        return "telugu"
-    elif hindi_chars > telugu_chars and hindi_chars > 3:
-        return "hindi"
-    else:
-        return "english"
+# ✅ Text-to-Speech
+engine = pyttsx3.init()
+engine.setProperty("rate", 175)
 
-# ✅ Savage Reply
-def get_savage_reply(language):
-    return random.choice(BOOTHULU.get(language, BOOTHULU["english"]))
+def speak_text(text):
+    engine.say(text)
+    engine.runAndWait()
 
-# ✅ Load chat history
-def load_chat_history():
-    return []  # always start fresh
+def voice_input():
+    recognizer = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("🎤 Listening...")
+        audio = recognizer.listen(source)
+        try:
+            return recognizer.recognize_google(audio)
+        except sr.UnknownValueError:
+            return "Sorry, I couldn't understand that."
+        except sr.RequestError:
+            return "Speech service unavailable."
 
-# ✅ Save chat history
+# ✅ Save Chat History
 def save_chat_history(history):
-    with open(CHAT_LOG_FILE, "w", encoding="utf-8") as f:
-        json.dump(history, f, indent=4)
+    with open(CHAT_HISTORY_FILE, "w", encoding="utf-8") as f:
+        json.dump(history, f, ensure_ascii=False, indent=2)
 
-# ✅ Typing Sound Function
-def play_typing_sound():
-    try:
-        playsound("sounds/typing.mp3", block=False)
-    except Exception as e:
-        print(f"⚠️ Typing sound error: {e}")
+# ✅ Load Chat History
+def load_chat_history():
+    if os.path.exists(CHAT_HISTORY_FILE):
+        with open(CHAT_HISTORY_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
 
-# ✅ Chat Function
-def chat_with_ai(message, history):
-    try:
-        history.append({"role": "user", "content": message})
+# ✅ Format Chat for Gradio (messages format)
+def format_chat_for_ui(chat_history):
+    formatted = []
+    for msg in chat_history:
+        if msg["role"] == "date":
+            formatted.append({
+                "role": "assistant",
+                "content": f"📅 **{msg['content']}**"
+            })
+        else:
+            formatted.append(msg)
+    return formatted
 
-        # ✅ Savage Mode if aggressive words detected
-        aggressive_words = ["puka", "gudda", "fuck", "madarchod", "lodu", "pani ledu", "deng", "chutiya"]
-        if any(word in message.lower() for word in aggressive_words):
-            lang = detect_language(message)
-            savage_reply = get_savage_reply(lang)
-            history.append({"role": "assistant", "content": savage_reply})
-            save_chat_history(history)
-            return history, ""
-
-        # ✅ Normal AI mode (Only send last 10 messages for context)
-        groq_history = [{"role": msg["role"], "content": msg["content"]}
-                        for msg in history[-10:]]
-
-        # ✅ Typing Sound
-        threading.Thread(target=play_typing_sound).start()
-
-        completion = client.chat.completions.create(
-            model="llama3-8b-8192",
-            messages=groq_history
-        )
-        response = completion.choices[0].message.content
-        history.append({"role": "assistant", "content": response})
-        save_chat_history(history)
-        return history, ""
-
-    except Exception as e:
-        history.append({"role": "assistant", "content": f"⚠️ API Error: {str(e)}"})
-        save_chat_history(history)
-        return history, ""
-
-# ✅ Voice Input
-def voice_input(history):
-    user_input = listen_voice()
-    if user_input:
-        return chat_with_ai(user_input, history)
-    return history, ""
-
-# ✅ Speak Last Response
-def speak_last(history):
-    if history and history[-1]["role"] == "assistant":
-        speak_text(history[-1]["content"], villain_mode=True)
+# ✅ Add Date Header (only once per day)
+def add_daily_date_if_needed(history):
+    today = datetime.date.today().strftime("%Y-%m-%d")
+    if not history or history[-1].get("role") != "date" or history[-1].get("content") != today:
+        color = random.choice(DAY_COLORS)
+        history.append({"role": "date", "content": today, "color": color})
     return history
 
-# ✅ Red & Black Animated Villain Theme
+# ✅ AI Response Function (with DuckDuckGo integration)
+def chatbot_response(message, history):
+    history = load_chat_history()
+    history = add_daily_date_if_needed(history)
+
+    # ✅ Search if starts with "search:"
+    if message.lower().startswith("search:"):
+        query = message[7:].strip()
+        results = list(search_engine.text(query, max_results=3))
+        if results:
+            answer = "\n\n".join([f"🔗 [{r['title']}]({r['href']})\n{r['body']}" for r in results])
+        else:
+            answer = "No results found."
+    else:
+        try:
+            response = client.chat.completions.create(
+                model="llama3-8b-8192",
+                messages=[{"role": "system", "content": "You are Savage Chitti, a witty assistant."}] +
+                         [{"role": msg["role"], "content": msg["content"]}
+                          for msg in history if msg["role"] in ["user", "assistant"]] +
+                         [{"role": "user", "content": message}],
+                temperature=0.7
+            )
+            answer = response.choices[0].message.content.strip()
+        except Exception as e:
+            answer = f"⚠️ API Error: {str(e)}"
+
+    timestamp = datetime.datetime.now().strftime("%H:%M")
+    history.append({"role": "user", "content": f"{message}  \n⏰ {timestamp}"})
+    history.append({"role": "assistant", "content": f"{answer}  \n⏰ {timestamp}"})
+    save_chat_history(history)
+
+    return format_chat_for_ui(history), ""
+
+# ✅ Clear Only Current Session (Keeps File)
+def clear_session():
+    return []
+
+# ✅ Read Last Response
+def speak_last_response(history):
+    if history and isinstance(history[-1], dict) and history[-1]["role"] == "assistant":
+        speak_text(history[-1]["content"].replace("⏰", ""))
+
+# ✅ UI
 with gr.Blocks(css="""
-    body {background-color: #000 !important; color: #FF0000 !important; font-family: 'Courier New', monospace;}
-    .gradio-container {background-color: #000 !important; color: #FF0000 !important; animation: pulse-bg 4s infinite alternate;}
-    .gr-chatbot {background-color: #000 !important; color: #FF0000 !important; border: 2px solid #FF0000 !important; box-shadow: 0px 0px 12px #FF0000; animation: glow 2s infinite alternate;}
-    .gr-chatbot .message.user {background-color: #111 !important; color: #FF3333 !important; border: 1px solid #FF0000 !important; box-shadow: 0px 0px 6px #FF0000;}
-    .gr-chatbot .message.bot {background-color: #000 !important; color: #FF0000 !important; border: 1px solid #990000 !important; text-shadow: 0px 0px 8px #FF0000; animation: flicker 1.5s infinite alternate;}
-    .gr-button {background-color: #FF0000 !important; color: #000 !important; border: 2px solid #FF0000 !important; font-weight: bold; box-shadow: 0px 0px 8px #FF0000; animation: glow 2s infinite alternate;}
-    .gr-button:hover {background-color: #990000 !important; color: #FFF !important; box-shadow: 0px 0px 15px #FF0000;}
-    .gr-textbox {background-color: #111 !important; color: #FF0000 !important; border: 2px solid #FF0000 !important; box-shadow: 0px 0px 6px #FF0000;}
-    h1, h2, h3, h4, h5, h6 {color: #FF0000 !important; text-shadow: 0px 0px 12px #FF0000; animation: flicker 2s infinite alternate;}
-    @keyframes glow {from { box-shadow: 0px 0px 5px #FF0000; } to { box-shadow: 0px 0px 15px #FF0000; }}
-    @keyframes flicker {0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; }}
-    @keyframes pulse-bg {from { background-color: #000; } to { background-color: #110000; }}
+body {background-color: #F8F9FB;}
+.gradio-container {max-width: 850px; margin: auto;}
+#col-container {display: flex; gap: 10px;}
+.date-header {font-weight: bold; padding: 6px; border-radius: 6px; text-align: center;}
+button {border-radius: 8px; font-weight: bold;}
 """) as demo:
-
-    gr.Markdown("## 😈 Chitti - The Most Savage AI on Earth")
-
-    chatbot = gr.Chatbot(value=load_chat_history(), label="Savage Chitti", type="messages")
-    txt = gr.Textbox(placeholder="Type your message...", show_label=False)
+    gr.Markdown("## 🤖 Savage Chitti (with Internet Search & Timestamps)")
+    chatbot = gr.Chatbot(value=format_chat_for_ui(load_chat_history()), label="Savage Chitti", type="messages")
 
     with gr.Row():
-        submit_btn = gr.Button("Send")
-        voice_btn = gr.Button("🎤 Voice Input")
-        speak_btn = gr.Button("🔊 Villain Voice")
+        msg = gr.Textbox(placeholder="Type a message or 'search: your query'...", scale=4)
+        send_btn = gr.Button("Send", scale=1)
+        speak_btn = gr.Button("🔊 Speak Last", scale=1)
+        voice_btn = gr.Button("🎤 Voice", scale=1)
+        clear_btn = gr.Button("🗑️ Clear Session", scale=1)
 
-    submit_btn.click(chat_with_ai, [txt, chatbot], [chatbot, txt])
-    txt.submit(chat_with_ai, [txt, chatbot], [chatbot, txt])
-    voice_btn.click(voice_input, [chatbot], [chatbot])
-    speak_btn.click(speak_last, [chatbot], [chatbot])
+    send_btn.click(chatbot_response, [msg, chatbot], [chatbot, msg])
+    msg.submit(chatbot_response, [msg, chatbot], [chatbot, msg])
+    voice_btn.click(lambda h: chatbot_response(voice_input(), h), [chatbot], chatbot)
+    speak_btn.click(speak_last_response, [chatbot], None)
+    clear_btn.click(clear_session, None, chatbot)
 
 demo.launch()

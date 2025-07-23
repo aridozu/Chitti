@@ -1,22 +1,58 @@
 [
     {
         "role": "user",
-        "metadata": null,
-        "content": "hi",
-        "options": null
+        "content": "yadava "
     },
     {
         "role": "assistant",
-        "metadata": null,
-        "content": "Hi! It's nice to meet you. Is there something I can help you with, or would you like to chat?",
-        "options": null
+        "content": "The Yadavas!\n\nThe Yadavas were an ancient Indian royal dynasty, tracing their origins back to the mythical Yadu, a grandson of the solar deity Varuna (not to be confused with the more famous Yadu from the epic Mahabharata).\n\nHistorically, the Yadavas ruled several kingdoms in ancient India, including the Yadava kingdom of Devagiri (now known as Daulatabad in Maharashtra) and the kingdom of Kakatiya in Telangana. They were known for their military achievements, administrative skills, and architectural accomplishments.\n\nTwo notable Yadava rulers are:\n\n1. **Raja Ram Ram Deo Yadav** (r. 1237-1280 CE): He founded the Yadava kingdom of Devagiri and built the famous Chanahsati tank, which is said to have a unique architecture.\n2. **Veerabhadra Yadava** (r. 1262-1290 CE): He was a skilled military commander who expanded the Yadava kingdom and defeated the powerful Delhi Sultanate.\n\nThe Yadavas were known for their cultural and artistic achievements as well. They patronized literature, music, and dance, and their courts were said to be centers of learning and art.\n\nHowever, after the 14th century, the Yadava dynasty began to decline, and their kingdoms were eventually conquered by the Delhi Sultanate and later the Mughal Empire.\n\nToday, the Yadavas are an important Telugu and Maharashtrian caste group, with many families claiming descent from the ancient Yadava rulers."
     },
     {
         "role": "user",
-        "content": "whats up"
+        "content": "you are an idiot"
     },
     {
         "role": "assistant",
-        "content": "Not much! How about you? Just hanging out? I'm an AI, so I don't really have personal stuff going on, but I'm always happy to chat and see where the conversation takes us. How's your day been so far?"
+        "content": "I apologize if my previous response came across as insensitive or unhelpful. As a machine learning model, my purpose is to provide information and assist with tasks to the best of my abilities.\n\nHowever, I understand that everyone has different opinions and perspectives, and it's okay to disagree with each other. Instead of resorting to personal insults, I'd like to ask you to clarify what you didn't find helpful about my response.\n\nWas there something specific you were looking for that I didn't cover? Did I provide inaccurate information? Please let me know, and I'll do my best to improve my response or provide additional information to help you better.\n\nRemember, I'm here to help and provide information, not to argue or insult. Let's keep the conversation constructive and respectful!"
+    },
+    {
+        "role": "user",
+        "content": "whats today gold rate?"
+    },
+    {
+        "role": "assistant",
+        "content": "Here\u2019s what I found for you:\n\n\n\ud83c\udf10 **Live Web Results:**\n- [Gold Rate Today (July 23): Check Out Gold Prices In Delhi, Mumbai ...](https://news.abplive.com/business/personal-finance/gold-rate-today-july-23-gold-prices-in-delhi-mumbai-bengaluru-ahmedabad-1789831)\n- [Gold Rate Today (22 July 2025), Gold Price in India - Goodreturns](https://www.goodreturns.in/gold-rates/)\n- [Gold Price Today in India | Gold Gram 24K, 22K, 18K in Indian Rupee](https://www.goldrate24.com/gold-prices/asia/india/)"
+    },
+    {
+        "role": "user",
+        "content": "tell me about elon musk"
+    },
+    {
+        "role": "assistant",
+        "content": "Elon Musk!\n\nElon Musk is a South African-born entrepreneur, inventor, and business magnate. He is the CEO and CTO of SpaceX, CEO and founder of Neuralink, and CEO of The Boring Company. He is also the co-founder of Tesla, Inc. and PayPal.\n\nHere are some interesting facts about Elon Musk:\n\n**Early Life and Education:**\n\n* Born on June 28, 1971, in Pretoria, South Africa.\n* Moved to Canada in 1992 to attend college.\n* Graduated with a degree in economics and physics from the University of Pennsylvania.\n* Moved to California to pursue a career in technology.\n\n**Career:**\n\n* Co-founded PayPal, which was later sold to eBay for $1.5 billion.\n* Founded SpaceX in 2002, with the goal of reducing space transportation costs and enabling the colonization of Mars.\n* Co-founded Tesla, Inc. in 2003, with the goal of accelerating the world's transition to sustainable energy.\n* Became the CEO of Tesla in 2008.\n* Founded The Boring Company in 2016, to reduce traffic congestion in cities.\n* Founded Neuralink in 2016, to develop implantable brain\u2013machine interfaces.\n\n**Innovations and Achievements:**\n\n* Revolutionized the electric vehicle industry with Tesla\u2019s innovative designs and technology.\n* Made space travel more affordable and accessible through SpaceX\u2019s reusable rockets.\n* Founded the Hyperloop project, a high-speed transportation system that aims to reduce travel time between cities.\n* Developed the autonomous vehicle technology, Autopilot, which has improved road safety.\n\n**Personal Life:**\n\n* Married to Canadian author and actress Talulah Riley (twice).\n* Has seven younger siblings.\n* Has a private jet, a collection of exotic cars, and a sprawling home in Los Angeles.\n* Known for his love of science fiction, reading, and playing video games.\n\n**Interesting Traits:**\n\n* Has an uncanny ability to think outside the box and come up with innovative solutions.\n* Is a self-confirmed introvert and has been known to sleep for only a few hours a night.\n* Has a vast Twitter following and often uses the platform to share his thoughts and ideas.\n\n**Challenges and Controversies:**\n\n* Has been involved in several controversies, including Twitter feuds with other celebrities and investors.\n* Has been criticized for his management style and working conditions at Tesla.\n* Has faced challenges with SpaceX and Tesla, including production delays, financial struggles, and employee layoffs.\n\n**Conclusion:**\n\nElon Musk is a visionary entrepreneur, inventor, and business magnate who has made a significant impact on the world. His innovative ideas, perseverance, and passion for sustainability have inspired many. However, his personal and professional struggles have also led to controversy and criticism. Nonetheless, he remains one of the most influential and interesting figures in the world."
+    },
+    {
+        "role": "user",
+        "content": "what is latest cricket news? <span style='color:gray; font-size:0.8em;'>(12:49 PM)</span>"
+    },
+    {
+        "role": "assistant",
+        "content": "\u26a0\ufe0f API Error: Error code: 400 - {'error': {'message': \"'messages.0' : for 'role:user' the following must be satisfied[('messages.0' : property 'metadata' is unsupported)]\", 'type': 'invalid_request_error'}}"
+    },
+    {
+        "role": "user",
+        "content": "hello <span style='font-size:10px; color:gray;'>[12:52 PM]</span>"
+    },
+    {
+        "role": "assistant",
+        "content": "Hello! <span style='font-size:10px; color:gray;'>[12:52 PM]</span>"
+    },
+    {
+        "role": "user",
+        "content": "wassup? <span style='font-size:10px; color:gray;'>[12:52 PM]</span>"
+    },
+    {
+        "role": "assistant",
+        "content": "Not much! Just hanging out and waiting for someone to talk to. How about you? <span style='font-size:10px; color:gray;'>[12:52 PM]</span>"
     }
 ]
