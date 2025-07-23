@@ -1,26 +1,25 @@
-# 🤖 AI Assistant Bot
+# 😈 Savage Chitti AI Bot
 
-An interactive AI assistant built with **Gradio**, supporting:
-
-✅ Text Chat  
-✅ Voice Input (Speech-to-Text)  
-✅ Text-to-Speech Responses  
+An **AI-powered savage chatbot** built with **Python, Groq API, and Gradio**.  
+Chitti talks normally if you stay polite, but if you use abusive words…  
+**It UNLEASHES SAVAGE MODE!** ⚡
 
 ---
 
 ## 🚀 Features
-- Type or speak your questions.
-- The assistant replies instantly using **Groq/OpenAI** (configured in `gpt_module`).
-- Reads responses aloud with a click.
+- 🤖 **AI Chat** powered by **Groq LLaMA**  
+- 🔥 **Savage Mode** with custom replies (`savage_replies.json`)  
+- 🎤 **Voice Input & Villain Voice Output**  
+- 🕶️ **Dark Red & Black Themed UI**
 
 ---
 
-## 🔥 How to Use
-1. Click **"Send"** to chat via text.
-2. Click **"🎤 Voice Input"** to ask via microphone.
-3. Click **"🔊 Speak Reply"** to hear the answer.
+## ▶️ Quick Start
 
----
+```bash
+git clone https://github.com/aridozu/Chitti.git
+cd Chitti
+pip install -r requirements.txt
 
 ### ✨ Credits
 Built by **Subhash Chandra**.
