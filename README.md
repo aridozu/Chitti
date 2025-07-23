@@ -47,9 +47,45 @@ Savage Chitti is a **personal AI assistant** built using **Python, Gradio, and G
 ```bash
 git clone https://github.com/aridozu/Chitti.git
 cd Chitti
+ 
+2️⃣ Install Dependencies
+bash
+pip install -r requirements.txt
 
 
+3️⃣ Setup Environment
+Create a .env file in the root directory and add:
+
+GROQ_API_KEY=your_groq_api_key_here
 
 
+4️⃣ Run the App
 
-***** MADE BY Maddala SubhashChandra*****
+python app.py
+
+
+Then open in your browser 👉 http://127.0.0.1:7860
+
+🚀 Usage
+✅ Type or Speak your question.
+✅ Click Voice 🎤 to talk.
+✅ Click Speak Last 🔊 to make Chitti read the last response.
+✅ Click Clear Session 🗑️ to clear today’s chat only.
+
+🔮 Future Enhancements
+✅ Multiple chat sessions with titles
+
+✅ Dark mode toggle
+
+✅ PDF export of conversations
+
+✅ More plugins (Calculator, Wikipedia search, etc.)
+
+👨‍💻 Author
+Made with ❤️ by Maddala SubhashChandra
+
+🔗 GitHub Profile
+
+📜 License
+This project is open-source under the MIT License.
+
