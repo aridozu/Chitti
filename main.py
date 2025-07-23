@@ -8,28 +8,20 @@ import speech_recognition as sr
 engine = pyttsx3.init()
 
 chat_history_file = "chat_log.json"
-chat_history = [{"role": "system", "content": "You are a helpful assistant."}]
+chat_history = [{"role": "system", "content": "You are Chitti – The AI Bot, a super-intelligent and friendly assistant who talks like a human."}]
 last_reply = ""
 
-
-# ✅ --- FUNCTION FOR GRADIO & REUSE ---
 def get_response(user_message):
-    """
-    Returns a chatbot reply (for Gradio or other apps).
-    Uses the same chat history as CLI.
-    """
     global chat_history
     chat_history.append({"role": "user", "content": user_message})
     reply = ask_gpt(user_message, chat_history)
     chat_history.append({"role": "assistant", "content": reply})
     return reply
 
-
-# ✅ --- CLI ASSISTANT (Runs Only When Main is Executed Directly) ---
 def run_cli():
     global chat_history, last_reply
 
-    print("🤖 AI Assistant")
+    print("🤖 Chitti – The AI Bot")
     choice = input("Start new session (/new) or load previous chat (/load)? ").strip().lower()
 
     if choice == "/load" and os.path.exists(chat_history_file):
@@ -37,7 +29,7 @@ def run_cli():
             chat_history = json.load(f)
         print("🔄 Loaded previous chat.")
     else:
-        chat_history = [{"role": "system", "content": "You are a helpful assistant."}]
+        chat_history = [{"role": "system", "content": "You are Chitti – The AI Bot, a super-intelligent and friendly assistant who talks like a human."}]
         print("🆕 Started new chat.")
 
     print("\nType '/exit' to quit, '/clear' to reset, '/save' to save, '/speak' to read aloud, '/voice' for voice input.\n")
@@ -45,13 +37,12 @@ def run_cli():
     while True:
         user_input = input("You: ").strip()
 
-        # --- COMMANDS ---
         if user_input.lower() in ["/exit", "exit"]:
             print("Goodbye!")
             break
 
         elif user_input.lower() == "/clear":
-            chat_history = [{"role": "system", "content": "You are a helpful assistant."}]
+            chat_history = [{"role": "system", "content": "You are Chitti – The AI Bot, a super-intelligent and friendly assistant who talks like a human."}]
             print("✅ Chat history cleared.")
             continue
 
@@ -77,10 +68,8 @@ def run_cli():
                 with sr.Microphone() as source:
                     print("🎤 Listening...")
                     audio = recognizer.listen(source)
-
                 user_input = recognizer.recognize_google(audio)
                 print(f"You (voice): {user_input}")
-
             except sr.UnknownValueError:
                 print("⚠️ Sorry, I couldn't understand your voice.")
                 continue
@@ -88,13 +77,10 @@ def run_cli():
                 print("⚠️ Speech recognition service unavailable.")
                 continue
 
-        # --- CHATBOT RESPONSE ---
         reply = get_response(user_input)
-        print(f"Assistant: {reply}")
+        print(f"Chitti: {reply}")
         last_reply = reply
 
-
-# ✅ --- ONLY RUN CLI IF THIS FILE IS EXECUTED DIRECTLY ---
 if __name__ == "__main__":
     run_cli()
 

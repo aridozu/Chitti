@@ -1,9 +1,13 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv()  # ✅ Loads variables from .env
 
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
-if not OPENROUTER_API_KEY:
-    print("❌ OPENROUTER_API_KEY is missing. Check your .env file.")
+if not GROQ_API_KEY:
+    print("❌ GROQ_API_KEY is missing. Check your .env file.")
+else:
+    print("✅ GROQ_API_KEY loaded successfully.")
+
+
